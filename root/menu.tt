@@ -1,0 +1,6 @@
+[% IF c.user -%]
+<a href="[% c.uri_for('/logout') -%]">Logout</a> [[% c.user.username -%]] |
+[% ELSE -%]
+<a href="[% c.uri_for('/login') -%]">Login</a> |
+[% END -%]
+<a href="[% c.uri_for('/') -%]">Home</a>
