@@ -20,7 +20,9 @@ use Catalyst qw/
   -Debug
   ConfigLoader
   Static::Simple
+  
   Authentication
+  Authorization::Roles
 
   Session
   Session::Store::File
