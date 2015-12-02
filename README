@@ -1,1 +1,17 @@
-Run script/lightpage_server.pl to test the application.
+=head1 LightPage
+
+This is an application on which I am playing with the
+brilliant Catalyst framework.
+
+=head1 SYNOPSYS
+
+This is not a "real" application, just an experiment.
+
+=head1 DESCRIPTION
+
+It can be extended, used for small projects or learn
+from the code.
+
+=head1 AUTHOR
+
+Tamas Molnar <stiron@gmail.com>
