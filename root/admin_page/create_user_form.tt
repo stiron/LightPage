@@ -1,0 +1,13 @@
+[% META title = "Create a new user" -%]
+<p>
+<form method="post" action="[% c.uri_for('create_user_do') %]">
+<table>
+  <tr><td>Username:</td><td><input type="text" name="username"></td></tr>
+  <tr><td>First name:</td><td><input type="text" name="firs_name"></td></tr>
+  <tr><td>Last name:</td><td><input type="text" name="last_name"></td></tr>
+  <tr><td>E-mail address:</td><td><input type="text" name="email_address"></td></tr>
+  <tr><td>Password</td><td><input type="password" name="password"></td></tr>
+</table>
+<input type="submit" name="Submit" value="Submit">
+</form>
+</p>

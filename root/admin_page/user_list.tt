@@ -1,11 +1,11 @@
 [% META title = "User list" -%]
-[% USE dumper -%]
 <table>
   <tr>
     <td><strong>Nick</strong></td>
     <td><strong>Name</strong></td>
     <td><strong>Mail</strong></td>
     <td><strong>Roles</strong></td>
+    <td><strong>Delete</strong></td>
   </tr>
 [% FOREACH user IN user_list -%]
   <tr>
@@ -13,6 +13,8 @@
     <td>[% user.first_name -%] [% user.last_name -%]</td>
     <td>[% user.email_address -%]</td>
     <td>[% FOREACH r IN user.roles -%][% r.role -%] [% END -%]</td>
+    <td><a href="[% c.uri_for(c.controller.action_for('user_delete'), [user.id]) -%]">Delete</a></td>
   </tr>
 [% END -%]
 </table>
+<p><a href="[% c.uri_for('/admin/create_user_form') -%]">New user</a></p>
