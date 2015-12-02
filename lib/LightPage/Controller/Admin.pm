@@ -25,6 +25,16 @@ sub index : Path : Args(0) {
     $c->stash( template => 'admin_page/admin_index.tt' );
 }
 
+=head2 user_list
+
+=cut
+
+sub user_list : Local : Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash( user_list => [ $c->model('DB::User')->all ] );
+    $c->stash( template  => 'admin_page/user_list.tt' );
+}
+
 =head2 auto
  
 Check if there is an admin user and, if not, forward to login page
