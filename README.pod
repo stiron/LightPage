@@ -1,6 +1,6 @@
-=head1 LightPage
+=head1 NAME
 
-This is an application on which I am playing with the
+B<LightPage> - This is an application on which I am playing with the
 brilliant Catalyst framework.
 
 =head1 SYNOPSYS
