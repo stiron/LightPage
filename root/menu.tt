@@ -4,3 +4,6 @@
 <a href="[% c.uri_for('/login') -%]">Login</a> |
 [% END -%]
 <a href="[% c.uri_for('/') -%]">Home</a>
+[% IF c.check_user_roles('admin') -%]
+| <strong><a href="[% c.uri_for('/admin') -%]">Admin page</a></strong>
+[% END -%]

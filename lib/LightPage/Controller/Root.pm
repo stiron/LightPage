@@ -34,6 +34,17 @@ sub index : Path : Args(0) {
     $c->stash( template => "index.tt" );
 }
 
+=head2 permission_denied
+
+Displays "Permission denied" alert
+
+=cut
+
+sub permission_denied : Global : Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash( template => "permission_denied.tt" );
+}
+
 =head2 default
 
 Standard 404 error page
