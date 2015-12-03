@@ -7,6 +7,7 @@
   <tr><td>First name:</td><td><input type="text" value="[% user_data.first_name -%]" name="first_name"></td></tr>
   <tr><td>Last name:</td><td><input type="text" value="[% user_data.last_name -%]" name="last_name"></td></tr>
   <tr><td>E-mail address:</td><td><input type="text" value="[% user_data.email_address -%]" name="email_address"></td></tr>
+  <tr><td>Admin role:</td><td><input type="checkbox" value="2" name="role_id" checked></td></tr>
 </table>
 <input type="submit" name="Submit" value="Submit">
 </form>

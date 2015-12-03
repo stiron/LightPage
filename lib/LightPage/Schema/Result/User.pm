@@ -156,5 +156,11 @@ __PACKAGE__->add_columns(
 );
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub full_name {
+    my ($self) = @_;
+    return $self->first_name . ' ' . $self->last_name;
+}
+
 __PACKAGE__->meta->make_immutable;
 1;

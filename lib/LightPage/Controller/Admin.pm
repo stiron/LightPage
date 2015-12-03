@@ -155,9 +155,10 @@ sub modify_user_do : Chained('user_object') : PathPart('modify_user_do') :
     my $first_name    = $c->request->params->{'first_name'};
     my $last_name     = $c->request->params->{'last_name'};
     my $email_address = $c->request->params->{'email_address'};
+    my $role_id       = $c->request->params->{'role_id'};
 
     # Updating user data
-    $c->stash->{user_object}->update(
+    my $user = $c->stash->{'user_object'}->update(
         {
             username      => $username,
             first_name    => $first_name,
@@ -165,6 +166,9 @@ sub modify_user_do : Chained('user_object') : PathPart('modify_user_do') :
             email_address => $email_address,
         }
     );
+
+    # Updating the many_to_many relationship
+    $user->update_or_create_related( 'user_roles', { role_id => $role_id } );
 
     # Redirecting to user list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
