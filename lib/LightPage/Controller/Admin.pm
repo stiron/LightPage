@@ -61,7 +61,6 @@ sub user_object : Chained('base') : PathPart('id') : CaptureArgs(1) {
     my ( $self, $c, $id ) = @_;
     $c->stash( user_object => $c->stash->{resultset}->find($id) );
     die "User ID $id not found!" if !$c->stash->{user_object};
-    $c->log->debug("*** INSIDE OBJECT METHOD for obj id=$id ***");
 }
 
 =head2 base -> create_user_form
@@ -78,7 +77,7 @@ sub create_user_form : Chained('base') : PathPart('create_user_form') : Args(0)
 
 =head2 base -> create_user_do
 
-Create a new user
+Action for creating a new user
 
 =cut
 
@@ -123,6 +122,51 @@ Delete a user
 sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
     my ( $self, $c ) = @_;
     $c->stash->{user_object}->delete;
+    $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
+}
+
+=head2 base -> user_object -> modify_user_form
+
+Form for modifying a user
+
+=cut
+
+sub modify_user_form : Chained('user_object') : PathPart('modify_user_form') :
+  Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash(
+        user_data => $c->stash->{user_object},
+        template  => "admin_page/modify_user_form.tt"
+    );
+}
+
+=head2 base -> user_object -> modify_user_do
+
+Action for modifying a user
+
+=cut
+
+sub modify_user_do : Chained('user_object') : PathPart('modify_user_do') :
+  Args(0) {
+    my ( $self, $c ) = @_;
+
+    # Data from the form
+    my $username      = $c->request->params->{'username'};
+    my $first_name    = $c->request->params->{'first_name'};
+    my $last_name     = $c->request->params->{'last_name'};
+    my $email_address = $c->request->params->{'email_address'};
+
+    # Updating user data
+    $c->stash->{user_object}->update(
+        {
+            username      => $username,
+            first_name    => $first_name,
+            last_name     => $last_name,
+            email_address => $email_address,
+        }
+    );
+
+    # Redirecting to user list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 

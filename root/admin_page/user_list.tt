@@ -5,6 +5,7 @@
     <td><strong>Name</strong></td>
     <td><strong>Mail</strong></td>
     <td><strong>Roles</strong></td>
+    <td><strong>Modify</strong></td>
     <td><strong>Delete</strong></td>
   </tr>
 [% FOREACH user IN user_list -%]
@@ -13,6 +14,7 @@
     <td>[% user.first_name -%] [% user.last_name -%]</td>
     <td>[% user.email_address -%]</td>
     <td>[% FOREACH r IN user.roles -%][% r.role -%] [% END -%]</td>
+    <td><a href="[% c.uri_for(c.controller.action_for('modify_user_form'), [user.id]) -%]">Modify</a></td>
     <td><a href="[% c.uri_for(c.controller.action_for('user_delete'), [user.id]) -%]">Delete</a></td>
   </tr>
 [% END -%]
