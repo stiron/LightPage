@@ -51,18 +51,6 @@ sub user_list : Chained('base') : PathPart('user_list') : Args(0) {
     );
 }
 
-=head2 base -> user_object
-
-Get a user object id, stash it
-
-=cut
-
-sub user_object : Chained('base') : PathPart('id') : CaptureArgs(1) {
-    my ( $self, $c, $id ) = @_;
-    $c->stash( user_object => $c->stash->{resultset}->find($id) );
-    die "User ID $id not found!" if !$c->stash->{user_object};
-}
-
 =head2 base -> create_user_form
 
 Form for creating a new user
@@ -111,6 +99,18 @@ sub create_user_do : Chained('base') : PathPart('create_user_do') : Args(0) {
 
     # Return to the user list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
+}
+
+=head2 base -> user_object
+
+Get a user object id, stash it
+
+=cut
+
+sub user_object : Chained('base') : PathPart('id') : CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    $c->stash( user_object => $c->stash->{resultset}->find($id) );
+    die "User ID $id not found!" if !$c->stash->{user_object};
 }
 
 =head2 base -> user_object -> user_delete

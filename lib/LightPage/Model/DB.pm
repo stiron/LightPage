@@ -5,12 +5,13 @@ use base 'Catalyst::Model::DBIC::Schema';
 
 __PACKAGE__->config(
     schema_class => 'LightPage::Schema',
-    
+
     connect_info => {
-        dsn => 'dbi:SQLite:lightpage.db',
-        user => '',
-        password => '',
-        on_connect_do => q{PRAGMA foreign_keys = ON},
+        dsn            => 'dbi:SQLite:lightpage.db',
+        user           => '',
+        password       => '',
+        sqlite_unicode => 1,
+        on_connect_do  => q{PRAGMA foreign_keys = ON},
     }
 );
 
