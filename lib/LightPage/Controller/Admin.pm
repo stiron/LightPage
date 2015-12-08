@@ -59,7 +59,7 @@ Create a new user
  
 =cut
 
-sub user_create : Chained('base') PathPart('user_create') Args(0) {
+sub user_create : Chained('base') : PathPart('user_create') : Args(0) {
     my ( $self, $c ) = @_;
     my $user = $c->model('DB::User')->new_result( {} );
     return $self->form( $c, $user );
@@ -71,7 +71,7 @@ Edit an existing user
  
 =cut
 
-sub user_edit : Chained('user_object') PathPart('user_edit') Args(0) {
+sub user_edit : Chained('user_object') : PathPart('user_edit') : Args(0) {
     my ( $self, $c ) = @_;
     return $self->form( $c, $c->stash->{'user_object'} );
 }
