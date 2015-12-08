@@ -4,6 +4,8 @@ use namespace::autoclean;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
+use LightPage::Form::User;
+
 =head1 NAME
 
 LightPage::Controller::Admin - Catalyst Controller
@@ -47,57 +49,50 @@ sub user_list : Chained('base') : PathPart('user_list') : Args(0) {
     my $user_list = [ $c->model('DB::User')->all ];
     $c->stash(
         user_list => $user_list,
-        template  => 'admin_page/user_list.tt'
+        template  => 'admin_page/user_list.tt',
     );
 }
 
-=head2 base -> create_user_form
-
-Form for creating a new user
-
+=head2 base -> user_create
+ 
+Create a new user
+ 
 =cut
 
-sub create_user_form : Chained('base') : PathPart('create_user_form') : Args(0)
-{
+sub user_create : Chained('base') PathPart('user_create') Args(0) {
     my ( $self, $c ) = @_;
-    $c->stash( template => "admin_page/create_user_form.tt" );
+    my $user = $c->model('DB::User')->new_result( {} );
+    return $self->form( $c, $user );
 }
 
-=head2 base -> create_user_do
-
-Action for creating a new user
-
+=head2 base -> user_object -> user_edit
+ 
+Edit an existing user
+ 
 =cut
 
-sub create_user_do : Chained('base') : PathPart('create_user_do') : Args(0) {
+sub user_edit : Chained('user_object') PathPart('user_edit') Args(0) {
     my ( $self, $c ) = @_;
+    return $self->form( $c, $c->stash->{'user_object'} );
+}
 
-    # Data from the form
-    my $username      = $c->request->params->{'username'};
-    my $first_name    = $c->request->params->{'first_name'};
-    my $last_name     = $c->request->params->{'last_name'};
-    my $email_address = $c->request->params->{'email_address'};
-    my $password      = $c->request->params->{'password'};
-    my $active        = 1;
-    my $role_id       = 1;
+=head2 form
+ 
+Process the FormHandler user form
+ 
+=cut
 
-    # Creating the user
-    my $user = $c->model('DB::User')->create(
-        {
-            username      => $username,
-            first_name    => $first_name,
-            last_name     => $last_name,
-            email_address => $email_address,
-            password      => $password,
-            active        => $active,
-        }
-    );
+sub form {
+    my ( $self, $c, $user ) = @_;
 
-    # Adding to the roles
-    # $user->create_related( 'user_roles', { role_id => $role_id } );
-    $user->add_to_user_roles( { role_id => $role_id } );
+    my $form = LightPage::Form::User->new;
 
-    # Return to the user list
+    # Set the template
+    $c->stash( template => 'admin_page/c_user.tt', form => $form );
+    $form->process( item => $user, params => $c->req->params );
+    return unless $form->validated;
+
+    # Return to books list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 
@@ -122,55 +117,6 @@ Delete a user
 sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
     my ( $self, $c ) = @_;
     $c->stash->{user_object}->delete;
-    $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
-}
-
-=head2 base -> user_object -> modify_user_form
-
-Form for modifying a user
-
-=cut
-
-sub modify_user_form : Chained('user_object') : PathPart('modify_user_form') :
-  Args(0) {
-    my ( $self, $c ) = @_;
-    $c->stash(
-        user_data => $c->stash->{user_object},
-        template  => "admin_page/modify_user_form.tt"
-    );
-}
-
-=head2 base -> user_object -> modify_user_do
-
-Action for modifying a user
-
-=cut
-
-sub modify_user_do : Chained('user_object') : PathPart('modify_user_do') :
-  Args(0) {
-    my ( $self, $c ) = @_;
-
-    # Data from the form
-    my $username      = $c->request->params->{'username'};
-    my $first_name    = $c->request->params->{'first_name'};
-    my $last_name     = $c->request->params->{'last_name'};
-    my $email_address = $c->request->params->{'email_address'};
-    my $role_id       = $c->request->params->{'role_id'};
-
-    # Updating user data
-    my $user = $c->stash->{'user_object'}->update(
-        {
-            username      => $username,
-            first_name    => $first_name,
-            last_name     => $last_name,
-            email_address => $email_address,
-        }
-    );
-
-    # Updating the many_to_many relationship
-    $user->update_or_create_related( 'user_roles', { role_id => $role_id } );
-
-    # Redirecting to user list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 
