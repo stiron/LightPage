@@ -1,6 +1,5 @@
-[% META title = 'Create/Update User' %]
+[% META title = 'Create/Update a User' %]
  
-[%# Render the HTML::FormHandler Form %]
-[% form.render %]
+<p>[% form.render %]</p>
  
 <p><a href="[% c.uri_for(c.controller.action_for('user_list')) %]">Return to user list</a></p>
