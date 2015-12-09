@@ -65,6 +65,32 @@ sub user_create : Chained('base') : PathPart('user_create') : Args(0) {
     return $self->form( $c, $user );
 }
 
+=head1 base -> role_list
+
+List roles
+
+=cut
+
+sub role_list : Chained('base') : PathPart('role_list') : Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash(
+        role_list => [ $c->model('DB::Role')->all ],
+        template  => 'admin_page/role_list.tt',
+    );
+}
+
+=head2 base -> user_object
+
+Get a user object id, stash it
+
+=cut
+
+sub user_object : Chained('base') : PathPart('id') : CaptureArgs(1) {
+    my ( $self, $c, $id ) = @_;
+    $c->stash( user_object => $c->stash->{resultset}->find($id) );
+    die "User ID $id not found!" if !$c->stash->{user_object};
+}
+
 =head2 base -> user_object -> user_edit
  
 Edit an existing user
@@ -74,6 +100,18 @@ Edit an existing user
 sub user_edit : Chained('user_object') : PathPart('user_edit') : Args(0) {
     my ( $self, $c ) = @_;
     return $self->form( $c, $c->stash->{'user_object'} );
+}
+
+=head2 base -> user_object -> user_delete
+
+Delete a user
+
+=cut
+
+sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash->{user_object}->delete;
+    $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 
 =head2 form
@@ -94,44 +132,6 @@ sub form {
 
     # Return to books list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
-}
-
-=head2 base -> user_object
-
-Get a user object id, stash it
-
-=cut
-
-sub user_object : Chained('base') : PathPart('id') : CaptureArgs(1) {
-    my ( $self, $c, $id ) = @_;
-    $c->stash( user_object => $c->stash->{resultset}->find($id) );
-    die "User ID $id not found!" if !$c->stash->{user_object};
-}
-
-=head2 base -> user_object -> user_delete
-
-Delete a user
-
-=cut
-
-sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
-    my ( $self, $c ) = @_;
-    $c->stash->{user_object}->delete;
-    $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
-}
-
-=head1 base -> role_list
-
-List roles
-
-=cut
-
-sub role_list : Chained('base') : PathPart('role_list') : Args(0) {
-    my ( $self, $c ) = @_;
-    $c->stash(
-        role_list => [ $c->model('DB::Role')->all ],
-        template  => 'admin_page/role_list.tt',
-    );
 }
 
 =head2 auto
