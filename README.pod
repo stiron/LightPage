@@ -5,12 +5,30 @@ brilliant Catalyst framework.
 
 =head1 SYNOPSYS
 
-This is not a "real" application, just an experiment.
+This is not a "real" application, just an experiment / practice.
 
 =head1 DESCRIPTION
 
 It can be extended, used for small projects or learn
-from the code.
+from the code (I hope).
+
+=head1 DEPENDENCIES
+
+=over 4
+
+=item I<Catalyst::Plugin::Authentication>
+
+=item I<Catalyst::Plugin::Authorization::Roles>
+
+=item I<Catalyst::Plugin::Session>
+
+=item I<Catalyst::Plugin::Session::Store::File>
+
+=item I<Catalyst::Plugin::Session::State::Cookie>
+
+=item I<HTML::FormHandler::Model::DBIC>
+
+=back
 
 =head1 AUTHOR
 
