@@ -47,6 +47,9 @@ sub index : Path : Args(0) {
             $c->response->redirect( $c->uri_for('/') );
             return;
         }
+        else {
+            $c->stash( error_msg => 'Bad username or password' );
+        }
     }
 
     # If either of above don't work out, send to the login page
