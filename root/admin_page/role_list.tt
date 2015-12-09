@@ -1,0 +1,15 @@
+[% META title = 'List of roles' -%]
+<table>
+  <tr>
+    <td><strong>ID</strong></td>
+    <td><strong>Role</strong></td>
+    <td><strong>Users</strong></td>
+  </tr>
+[% FOREACH role IN role_list -%]
+  <tr>
+    <td><strong>[% role.id -%]</strong></td>
+    <td><strong>[% role.role -%]</strong></td>
+    <td><em>[% FOREACH u IN role.users -%][% u.username -%] [% END -%]</em></td>
+  </tr>
+[% END # FOREACH role IN role_list -%]
+</table>

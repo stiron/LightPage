@@ -120,6 +120,20 @@ sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 
+=head1 base -> role_list
+
+List roles
+
+=cut
+
+sub role_list : Chained('base') : PathPart('role_list') : Args(0) {
+    my ( $self, $c ) = @_;
+    $c->stash(
+        role_list => [ $c->model('DB::Role')->all ],
+        template  => 'admin_page/role_list.tt',
+    );
+}
+
 =head2 auto
  
 Check if there is an admin user and, if not, forward to login page

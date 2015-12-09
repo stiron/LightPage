@@ -1,3 +1,4 @@
 [% META title = "Administration" -%]
 <h1>Administration</h1>
-<p><a href="[% c.uri_for('/admin/user_list') -%]">User list</a></p>
+<p><a href="[% c.uri_for('/admin/user_list') -%]">User list</a> |
+<a href="[% c.uri_for('/admin/role_list') -%]">Role list</a></p>
