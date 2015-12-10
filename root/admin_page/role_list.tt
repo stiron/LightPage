@@ -4,12 +4,14 @@
     <td><strong>ID</strong></td>
     <td><strong>Role</strong></td>
     <td><strong>Users</strong></td>
+    <td><strong>Delete</strong></td>
   </tr>
 [% FOREACH role IN role_list -%]
   <tr>
     <td><strong>[% role.id -%]</strong></td>
     <td><strong>[% role.role -%]</strong></td>
     <td><em>[% FOREACH u IN role.users -%][% u.username -%] [% END -%]</em></td>
+    <td><a href="[% c.uri_for(c.controller.action_for('role_delete'), [role.id]) -%]">Delete</a></td>
   </tr>
 [% END # FOREACH role IN role_list -%]
 </table>
