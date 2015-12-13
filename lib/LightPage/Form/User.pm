@@ -9,8 +9,8 @@ has '+item_class' => ( default => 'User' );
 has_field 'username' =>
   ( type => 'Text', required => 1, minlength => 4, maxlength => 20 );
 has_field 'first_name'    => ( type => 'Text' );
-has_field 'password'      => ( type => 'Password' );
 has_field 'last_name'     => ( type => 'Text' );
+has_field 'password'      => ( type => 'Password' );
 has_field 'email_address' => ( type => 'Email', required => 1 );
 has_field 'active' => (
     type    => 'Select',
