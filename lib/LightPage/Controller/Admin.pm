@@ -65,20 +65,6 @@ sub user_create : Chained('base') : PathPart('user_create') : Args(0) {
     return $self->form( $c, $user );
 }
 
-=head1 base -> role_list
-
-List roles
-
-=cut
-
-sub role_list : Chained('base') : PathPart('role_list') : Args(0) {
-    my ( $self, $c ) = @_;
-    $c->stash(
-        role_list => [ $c->model('DB::Role')->all ],
-        template  => 'admin_page/role_list.tt',
-    );
-}
-
 =head2 base -> user_object
 
 Get a user object id, stash it
