@@ -62,7 +62,7 @@ Create a new user
 sub user_create : Chained('base') : PathPart('user_create') : Args(0) {
     my ( $self, $c ) = @_;
     my $user = $c->model('DB::User')->new_result( {} );
-    return $self->form( $c, $user );
+    return $self->user_form( $c, $user );
 }
 
 =head2 base -> user_object
@@ -85,7 +85,7 @@ Edit an existing user
 
 sub user_edit : Chained('user_object') : PathPart('user_edit') : Args(0) {
     my ( $self, $c ) = @_;
-    return $self->form( $c, $c->stash->{'user_object'} );
+    return $self->user_form( $c, $c->stash->{'user_object'} );
 }
 
 =head2 base -> user_object -> user_delete
@@ -100,21 +100,21 @@ sub user_delete : Chained('user_object') : PathPart('user_delete') : Args(0) {
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
 }
 
-=head2 form
+=head2 user_form
  
 Process the FormHandler user form
  
 =cut
 
-sub form {
+sub user_form {
     my ( $self, $c, $user ) = @_;
 
-    my $form = LightPage::Form::User->new;
+    my $user_form = LightPage::Form::User->new;
 
     # Set the template
-    $c->stash( template => 'admin_page/c_user.tt', form => $form );
-    $form->process( item => $user, params => $c->req->params );
-    return unless $form->validated;
+    $c->stash( template => 'admin_page/c_user.tt', user_form => $user_form );
+    $user_form->process( item => $user, params => $c->req->params );
+    return unless $user_form->validated;
 
     # Return to books list
     $c->response->redirect( $c->uri_for( $self->action_for('user_list') ) );
